@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark light">
+
+    <link rel="stylesheet" href="styles/main.css"/>
+
+    <title>New tab</title>
+</head>
+<body>
+    <span class="overlay"></span>
+
+    <main id="main-content">
+        <header id="header">
+            <div class="time">
+                <span class="time-display">
+                    <h1>0:00:00</h1>
+                    <div class="date">
+                        <h5>01/01/1970</h5>
+                    </div>
+                </span>
+            </div>
+        </header>
+
+        <div id="bing">
+            <div class="logo">
+                <img src="assets/bing-logo.png" alt="Bing">
+            </div>
+            <div class="searchbar">
+                <input name="search" placeholder="Search Bing" class="input" id="bing-search" accesskey="b" autocomplete="off" onkeydown="redirect(event)"></input>
+            </div>
+        </div>
+        <div id="google">
+            <div class="logo">
+                <img src="assets/google-logo.png" alt="Google">
+            </div>
+            <div class="searchbar">
+                <input name="search" placeholder="Search Google" class="input" id="google-search" accesskey="g" autocomplete="off" onkeydown="redirect(event)"></input>
+            </div>
+        </div>
+        <div id="youtube">
+            <div class="logo">
+                <img src="assets/youtube-logo.png" alt="YouTube">
+            </div>
+            <div class="searchbar">
+                <input name="search" placeholder="Search YouTube" class="input" id="youtube-search" accesskey="y" autocomplete="off" onkeydown="redirect(event)"></input>
+            </div>
+        </div>
+        <div id="rumble">
+            <img class="logo" src="assets/rumble-logo.png" alt="Rumble">
+            <a href="https://rumble.com/subscriptions" target="_blank" rel="noopener noreferrer" accesskey="r" autocomplete="off" class="link"><h1>Subscriptions</h1></a>
+        </div>
+
+        <footer id="footer">
+            <div class="image-url">
+                <input type="text" name="bg-url" placeholder="Background image URL" class="input" id="bg-url" autocomplete="off">
+                <input type="submit" value="Set image" class="input" onclick="setBg(document.querySelector(`#bg-url`))">
+            </div>
+        </footer>
+    </main>
+
+
+    <script>
+        console.info("%cSetting the background image might throw an error in the console if the image URL is invalid.", "font-size: 1rem; font-weight: 600;");
+
+        var date = new Date(Date.now());
+
+        function navigate(href) {
+            window.location.href = encodeURI(href);
+        }
+
+        function redirect(event) {
+            if (event.keyCode === 27) {
+                event.target.blur();
+            } else if (event.keyCode === 13) {
+                if (event.target.id === "bing-search")
+                    navigate(`https://bing.com/search?q=${event.target.value}`);
+                else if (event.target.id === "google-search")
+                    navigate(`https://google.com/search?q=${event.target.value}`);
+                else if (event.target.id === "youtube-search")
+                    navigate(`https://youtube.com/results?search_query=${event.target.value}`);
+            }
+        }
+
+        document.body.querySelectorAll("*").forEach((v) => {
+            document.body.addEventListener("keydown", (e) => {
+                if (e.key.toLowerCase() === v.accessKey && document.activeElement === document.body && v.accessKey) {
+                    if (v.tagName !== "A") {
+                        setTimeout(function() {
+                            v.focus();
+                        }, 10);
+                    } else {
+                        v.click();
+                    }
+                }
+            })
+        });
+
+
+        function setTime(element) {
+            if (element == undefined) throw new TypeError("setTime(): expected 1 argument but got 0");
+            if (! (element instanceof HTMLElement) ) throw new TypeError("setTime(): `element` is not an HTML element");
+
+            const hours = date.getHours(),
+                minutes = date.getMinutes().toString().padStart(2, "0"),
+                seconds = date.getSeconds().toString().padStart(2, "0");
+
+            const day = date.getDate().toString().padStart(2, "0"),
+                month = (date.getMonth() + 1).toString().padStart(2, "0"),
+                year = date.getFullYear();
+
+            const time = `
+                <h1>${hours}:${minutes}:${seconds}</h1>
+                <div class="date">
+                    <h5>${day}/${month}/${year}</h5>
+                </div>
+            `;
+
+            element.innerHTML = time;
+        }
+
+        setInterval(() => date = new Date(Date.now()), 1000);
+
+        // set time for time displays
+        document.body.querySelectorAll(".time-display").forEach((v) => {
+            setInterval(() => setTime(v), 1000)
+        });
+
+        function setBg(element) {
+            localStorage.setItem("bg-url", element.value);
+
+            const data = localStorage.getItem("bg-url") || "";
+
+            document.body.style.backgroundImage = `url("${encodeURI(data)}")`;
+        }
+
+        // set background
+        (() => {
+            const element = document.querySelector("#bg-url");
+
+            if (element.value === "")
+                element.value = localStorage.getItem("bg-url") || "";
+
+            if (element.value !== "") {
+                document.body.style.backgroundImage = `url("${encodeURI(localStorage.getItem("bg-url") || "")}")`;
+            }
+        })();
+    </script>
+</body>
+</html>

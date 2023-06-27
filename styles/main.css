@@ -1,0 +1,189 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: "Verdana", sans-serif;
+}
+
+body {
+    min-width: fit-content;
+    min-height: fit-content;
+
+    background-size: cover;
+
+    z-index: -2;
+}
+
+.overlay {
+    background-image: radial-gradient(rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 100%), radial-gradient(rgba(0, 0, 0, 0) 50%, rgba(0, 0, 0, 0.3) 166%);
+
+    z-index: -1;
+
+    height: 100%;
+    opacity: 1;
+    position: absolute;
+    top: 0px;
+    transition: opacity 0.3s linear 0s;
+    width: 100%;
+
+    pointer-events: none;
+}
+
+#main-content {
+    display: grid;
+
+    width: 100vw;
+    height: 100vh;
+
+    grid-template-rows: 5% 45% 45% 5%;
+    grid-template-columns: 0.5fr 0.5fr;
+
+    grid-template-areas:
+        "header  header"
+        "bing    google"
+        "youtube rumble"
+        "footer  footer";
+
+    #youtube, #bing, #google, #rumble {
+        display: grid;
+    }
+
+    #header {
+        grid-area: header;
+
+        display: grid;
+
+        grid-template-areas: "1 2 3 4 time";
+
+        .time {
+            grid-area: time;
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            padding-right: 10px;
+
+            .date {
+                display: flex;
+                justify-content: center;
+            }
+        }
+    }
+
+    #bing {
+        grid-area: bing;
+    }
+    #google {
+        grid-area: google;
+    }
+    #youtube {
+        grid-area: youtube;
+    }
+    #rumble {
+        grid-area: rumble;
+
+        grid-template-areas:
+            "1 image 3"
+            "4 link  6"
+            "7 8     9" ;
+
+        place-items: center;
+
+        .logo {
+            grid-area: image;
+
+            height: auto;
+            width: 75%;
+        }
+        .link {
+            grid-area: link;
+        }
+    }
+
+    #bing, #google, #youtube {
+        grid-template-rows: 44% 12% 44%;
+        grid-template-columns: 15% 70% 15%;
+
+        grid-template-areas:
+            "1 icon 3"
+            "4 searchbar 6"
+            "7 8 9 ";
+
+        .searchbar {
+            display: flex;
+
+            grid-area: searchbar;
+            background: white;
+            border-radius: 9999px;
+
+            justify-content: center;
+            align-items: center;
+
+            .input {
+                height: 75%;
+                width: 90%;
+
+                background: none;
+                border: none;
+                outline: none;
+
+                font-size: 1.25rem;
+
+                font-family: "Verdana", sans-serif;
+
+                color: #000000;
+            }
+        }
+        .logo {
+            display: flex;
+            justify-content: center;
+
+            grid-area: icon;
+
+            padding: 10px;
+
+            img {
+                height: 100%;
+                max-width: 100%;
+            }
+        }
+    }
+
+    #footer {
+        grid-area: footer;
+
+        display: grid;
+
+        grid-template-areas: "1 2 3 4 image";
+
+        .image-url {
+            grid-area: image;
+
+            display: flex;
+            justify-content: flex-end;
+
+            .input {
+                background-color: black;
+
+                color: #ffffff;
+
+                padding: 10px;
+                margin: 0 10px 10px 0;
+
+                outline: none;
+                border: none;
+
+                border-radius: 9999px;
+
+                font-size: 0.9rem;
+            }
+            .input[type="submit"] {
+                cursor: pointer;
+
+                border-radius: 2.5px;
+
+                font-size: 0.95rem;
+            }
+        }
+    }
+}
