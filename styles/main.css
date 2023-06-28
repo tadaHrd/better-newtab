@@ -8,7 +8,7 @@ body {
     min-width: fit-content;
     min-height: fit-content;
 
-    background-size: cover;
+    background-size: contain;
 
     z-index: -2;
 }
